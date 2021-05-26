@@ -161,7 +161,7 @@ public class RestAuthController {
 	}
 
 	@PutMapping("/{id}")
-	@PreAuthorize("hasRole('USER') or hasRole('BUSINESS') or hasRole('ADMIN')")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<?> update(@Validated @RequestBody UserDto dto, @PathVariable Long id) {
 		User user = userRepository.getOne(id);
 		Address address = addressRepository.findOneByUserId(id);

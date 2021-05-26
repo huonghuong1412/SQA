@@ -19,6 +19,17 @@ public class Ward {
 	@Column(name = "districtid")
 	private String districtid;
 
+	public Ward() {
+		super();
+	}
+
+	public Ward(String wardid, String name, String districtid) {
+		super();
+		this.wardid = wardid;
+		this.name = name;
+		this.districtid = districtid;
+	}
+
 	public String getWardid() {
 		return wardid;
 	}

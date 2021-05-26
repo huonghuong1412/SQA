@@ -8,4 +8,5 @@ import com.example.demo.entity.tinhthanh.Province;
 @Repository
 public interface ProvinceRepository extends JpaRepository<Province, String>{
 	public Province findOneByProvinceid(String id);
+	public Boolean existsByName(String name);
 }

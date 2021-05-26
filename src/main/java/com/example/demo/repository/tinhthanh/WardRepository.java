@@ -10,4 +10,5 @@ import com.example.demo.entity.tinhthanh.Ward;
 @Repository
 public interface WardRepository extends JpaRepository<Ward, String> {
 	public List<Ward> findAllByDistrictid(String id);
+	public Boolean existsByName(String name);
 }

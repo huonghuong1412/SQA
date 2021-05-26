@@ -12,6 +12,7 @@ import com.example.demo.entity.User;
 public interface ThanhtoanRepository extends JpaRepository<Thanhtoan, Long> {
 
 	public List<Thanhtoan> getAllByUser(User user);
-		
+
+	public Boolean existsByCode(String code);
 
 }

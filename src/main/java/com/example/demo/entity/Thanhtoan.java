@@ -30,11 +30,27 @@ public class Thanhtoan extends BaseEntity {
 	@Column(name = "chi_nhanh_ngan_hang")
 	private String chiNhanhNganHang;
 
+	@Column(name = "ma_giao_dich")
+	private String code;
+
 	@Column(name = "loai_giao_dich")
 	private Integer loaiGiaoDich;
 
 	public Thanhtoan() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public Thanhtoan(User user, String noiDung, String ngayThanhToan, Double soTien, String nganHang,
+			String chiNhanhNganHang, String code, Integer loaiGiaoDich) {
+		super();
+		this.user = user;
+		this.noiDung = noiDung;
+		this.ngayThanhToan = ngayThanhToan;
+		this.soTien = soTien;
+		this.nganHang = nganHang;
+		this.chiNhanhNganHang = chiNhanhNganHang;
+		this.code = code;
+		this.loaiGiaoDich = loaiGiaoDich;
 	}
 
 	public User getUser() {
@@ -83,6 +99,14 @@ public class Thanhtoan extends BaseEntity {
 
 	public void setChiNhanhNganHang(String chiNhanhNganHang) {
 		this.chiNhanhNganHang = chiNhanhNganHang;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public Integer getLoaiGiaoDich() {

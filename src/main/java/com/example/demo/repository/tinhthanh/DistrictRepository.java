@@ -10,4 +10,7 @@ import com.example.demo.entity.tinhthanh.District;
 @Repository
 public interface DistrictRepository extends JpaRepository<District, String> {
 	public List<District> findAllByProvinceid(String id);
+	
+	public Boolean existsByName(String name);
+	
 }

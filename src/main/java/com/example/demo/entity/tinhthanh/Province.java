@@ -15,6 +15,18 @@ public class Province {
 
 	@Column(name = "name")
 	private String name;
+	
+	
+
+	public Province() {
+		super();
+	}
+
+	public Province(String provinceid, String name) {
+		super();
+		this.provinceid = provinceid;
+		this.name = name;
+	}
 
 	public String getName() {
 		return name;

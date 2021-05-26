@@ -19,6 +19,17 @@ public class District {
 	@Column(name = "provinceid")
 	private String provinceid;
 
+	public District() {
+		super();
+	}
+
+	public District(String districtid, String name, String provinceid) {
+		super();
+		this.districtid = districtid;
+		this.name = name;
+		this.provinceid = provinceid;
+	}
+
 	public String getName() {
 		return name;
 	}
