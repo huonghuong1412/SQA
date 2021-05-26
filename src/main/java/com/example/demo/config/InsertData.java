@@ -195,11 +195,11 @@ public class InsertData implements ApplicationListener<ContextRefreshedEvent>, I
 	private void createHistoryThanhtoan() {
 		List<Thanhtoan> list = new ArrayList<Thanhtoan>();
 		User user = userRepos.getOne(1L);
-		list.add(new Thanhtoan(user, "Đóng BHXH Tháng 5 - 2019", "2019-05-24 10:03:54.091", 4000000D, 
+		list.add(new Thanhtoan(user, "Đóng BHXH Tháng 5 - 2019", "2019-05-24 10:03:54.091", 1600000D, 
 				"Ngân hàng Nông nghiệp và Phát triển Nông thôn Việt Nam", "Chi nhánh Sở giao dịch - Phòng giao dịch số 2", "0000000001", 1));
-		list.add(new Thanhtoan(user, "Đóng BHXH Tháng 5 - 2020", "2020-05-20 10:03:54.091", 4000000D, 
+		list.add(new Thanhtoan(user, "Đóng BHXH Tháng 5 - 2020", "2020-05-20 10:03:54.091", 1600000D, 
 				"Ngân hàng Nông nghiệp và Phát triển Nông thôn Việt Nam", "Chi nhánh Sở giao dịch - Phòng giao dịch số 2", "0000000002", 1));
-		list.add(new Thanhtoan(user, "Đóng BHXH Tháng 5 - 2021", "2021-05-26 10:05:05.915", 4000000D, 
+		list.add(new Thanhtoan(user, "Đóng BHXH Tháng 5 - 2021", "2021-05-26 10:05:05.915", 1600000D, 
 				"Ngân hàng Nông nghiệp và Phát triển Nông thôn Việt Nam", "Chi nhánh Láng Hạ - Phòng giao dịch số 08", "0000000003", 1));
 	
 		for(Thanhtoan item : list) {
