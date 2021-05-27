@@ -22,20 +22,17 @@ public class JwtUtils {
 	private static final Logger Logger = LoggerFactory.getLogger(JwtUtils.class);
 
 	@Value("${bezkoder.app.jwtSecret}")
-	private String jwtSecret;
+	private static String jwtSecret;
 
 	@Value("${bezkoder.app.jwtExpirationMs}")
-	private int jwtExpirationMs;
+	private static int jwtExpirationMs;
 
 	public String generateJwtToken(Authentication authentication) {
 		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
-		return Jwts.builder()
-				.setSubject(userPrincipal.getUsername())
-				.setIssuedAt(new Date())
+		return Jwts.builder().setSubject(userPrincipal.getUsername()).setIssuedAt(new Date())
 				.setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
-				.signWith(SignatureAlgorithm.HS512, jwtSecret)
-				.compact();
+				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
 	}
 
 	public String getUserNameFromJwtToken(String token) {
@@ -59,6 +56,13 @@ public class JwtUtils {
 		}
 
 		return false;
+	}
+
+	public static String createToken(Long id, String username, String password, String email) {
+		UserDetailsImpl userPrincipal = new UserDetailsImpl(id, username, password, email);
+		return Jwts.builder().setSubject(userPrincipal.getUsername()).setIssuedAt(new Date())
+				.setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
+				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
 	}
 
 }
