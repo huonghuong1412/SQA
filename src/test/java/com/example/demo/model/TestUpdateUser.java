@@ -42,8 +42,8 @@ public class TestUpdateUser {
 	// Rollback PUT
 	// Test tạo đối tượng user
 	@Test
-	@Order(5)
-	public void testCreate1() {
+	@Order(1)
+	public void testCreate() {
 		Address address = new Address("Thành phố 1", "Quận Huyện 1", "Phường Xã 1", "Số nhà 1");
 		User user = new User();
 		user.setUsername("0000000002");
@@ -84,12 +84,13 @@ public class TestUpdateUser {
 
 	// Test lấy dòng vừa thêm vào bảng
 	@Test
-	@Order(6)
-	public void testSingleRow2() {
-		User user = new User();
+	@Order(2)
+	public void testSingleRow() {
+		User user = null;
 		try {
-			user = userRepos.getOne(userRepos.getNextSeriesId());
-			assertNotNull(userRepos.getOne(userRepos.getNextSeriesId()));
+			user = userRepos.findOneByUsername("0000000002");
+			System.out.println(user.getCccd() + " " + user.getUsername());
+			assertNotNull(user);
 			assertEquals(user.getUsername(), "0000000002");
 			assertEquals(user.getCccd(), "000000000002");
 		} catch (Exception e) {
@@ -99,39 +100,42 @@ public class TestUpdateUser {
 
 	// Test sửa dữ liệu trong bảng
 	@Test
-	@Order(6)
+	@Order(3)
 	public void testUpdate() {
-		User user = new User();
+		User user = null;
 		try {
-			user = userRepos.getOne(userRepos.getNextSeriesId());
+			user = userRepos.findOneByUsername("0000000002");
 			user.setFullName("Nguyễn Văn C");
-			user.setPhone("0999999999");
-			user.setEmail("test@gmail.com");
+			user.setPhone("0888888888");
+			user.setEmail("abcdef@gmail.com");
 			userRepos.save(user);
 
-			assertNotEquals("Nguyễn Văn B", userRepos.getOne(userRepos.getNextSeriesId()).getFullName());
-			assertEquals("Nguyễn Văn C", userRepos.getOne(2L).getFullName());
+			assertNotEquals("Nguyễn Văn B", user.getFullName());
+			assertEquals("Nguyễn Văn C", user.getFullName());
 
-			assertNotEquals("0123456789", userRepos.getOne(userRepos.getNextSeriesId()).getPhone());
-			assertEquals("0999999999", userRepos.getOne(2L).getPhone());
+			assertNotEquals("0123456789", user.getPhone());
+			assertEquals("0888888888", user.getPhone());
 
-			assertNotEquals("abc@gmail.com", userRepos.getOne(userRepos.getNextSeriesId()).getEmail());
-			assertEquals("test@gmail.com", userRepos.getOne(2L).getEmail());
+			assertNotEquals("abc@gmail.com", user.getEmail());
+			assertEquals("abcdef@gmail.com", user.getEmail());
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 	}
 
-	// Test lấy dòng vừa thêm vào bảng
+	// Test lấy dòng vừa thêm vào bảng, nếu tên Nguyễn Văn C, sđt 0888888888, email
+	// abcdef@gmail.com là đúng
 	@Test
-	@Order(7)
+	@Order(4)
 	public void testSingleRow3() {
-		User user = new User();
+		User user = null;
 		try {
-			user = userRepos.getOne(userRepos.getNextSeriesId());
-			assertNotNull(userRepos.getOne(userRepos.getNextSeriesId()));
+			user = userRepos.findOneByUsername("0000000002");
+			assertNotNull(userRepos.getOne(user.getId()));
 			assertEquals(user.getUsername(), "0000000002");
-			assertEquals(user.getCccd(), "000000000002");
+			assertEquals(user.getFullName(), "Nguyễn Văn C");
+			assertEquals(user.getPhone(), "0888888888");
+			assertEquals(user.getEmail(), "abcdef@gmail.com");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -139,11 +143,12 @@ public class TestUpdateUser {
 
 	// Test xóa dữ liệu vừa thêm vào bảng
 	@Test
-	@Order(8)
-	public void testDelete2() {
+	@Order(5)
+	public void testDelete() {
 		try {
-			userRepos.deleteById(userRepos.getNextSeriesId());
-			assertEquals(userRepos.existsById(userRepos.getNextSeriesId()), false);
+			User user = userRepos.findOneByUsername("0000000002");
+			userRepos.deleteById(user.getId());
+			assertEquals(userRepos.existsById(user.getId()), false);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -151,12 +156,12 @@ public class TestUpdateUser {
 
 	// Test lấy dòng vừa thêm vào bảng, nếu null là đúng
 	@Test
-	@Order(9)
-	public void testSingleRow4() {
+	@Order(6)
+	public void testSingleRow1() {
 		User user = new User();
 		try {
-			user = userRepos.getOne(userRepos.getNextSeriesId());
-			assertNull(userRepos.getOne(userRepos.getNextSeriesId()));
+			user = userRepos.findOneByUsername("0000000002");;
+			assertNull(userRepos.getOne(user.getId()));
 			assertNotEquals(user.getUsername(), "0000000002");
 			assertNotEquals(user.getCccd(), "000000000002");
 		} catch (Exception e) {

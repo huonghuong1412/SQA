@@ -9,9 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,7 +28,7 @@ import com.example.demo.repository.UserRepository;
 @SpringBootTest()
 @TestMethodOrder(OrderAnnotation.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-public class TestCreateUser {
+public class TestDeleteUser {
 
 	@Autowired
 	private UserRepository userRepos;
@@ -39,7 +39,7 @@ public class TestCreateUser {
 	@Autowired
 	private PasswordEncoder encoder;
 
-	// Rollback POST
+	// Rollback Delete
 	// Test tạo đối tượng user
 	@Test
 	@Order(1)
@@ -82,11 +82,11 @@ public class TestCreateUser {
 		}
 	}
 
-	// Test lấy dòng vừa thêm vào bảng, nếu khác null & username = 0000000002, cccd = 000000000002 là đúng
+	// Test lấy dòng vừa thêm vào bảng
 	@Test
 	@Order(2)
 	public void testSingleRow() {
-		User user = new User();
+		User user = null;
 		try {
 			user = userRepos.findOneByUsername("0000000002");
 			System.out.println(user.getCccd() + " " + user.getUsername());
@@ -117,7 +117,8 @@ public class TestCreateUser {
 	public void testSingleRow1() {
 		User user = new User();
 		try {
-			user = userRepos.findOneByUsername("0000000002");;
+			user = userRepos.findOneByUsername("0000000002");
+			;
 			assertNull(userRepos.getOne(user.getId()));
 			assertNotEquals(user.getUsername(), "0000000002");
 			assertNotEquals(user.getCccd(), "000000000002");
@@ -125,4 +126,5 @@ public class TestCreateUser {
 			// TODO: handle exception
 		}
 	}
+
 }
