@@ -16,29 +16,38 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.sun.istack.NotNull;
+
 @Entity
 @Table(name = "tbl_user")
 public class User extends BaseEntity {
 
 	@Column(name = "username")
+	@NotNull
 	private String username;
 
 	@Column(name = "cccd")
+	@NotNull
 	private String cccd;
 
 	@Column(name = "full_name")
+	@NotNull
 	private String fullName;
 
 	@Column(name = "date_of_birth")
+	@NotNull
 	private String dateOfBirth;
 
 	@Column(name = "password")
+	@NotNull
 	private String password;
 
 	@Column(name = "phone")
+	@NotNull
 	private String phone;
 
 	@Column(name = "email")
+	@NotNull
 	private String email;
 
 	@ManyToMany

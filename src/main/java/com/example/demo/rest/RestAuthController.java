@@ -101,6 +101,46 @@ public class RestAuthController {
 		if (userRepository.existsByEmail(dto.getEmail())) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Email đã được đăng ký!"));
 		}
+		
+		if(dto.getUsername() == null || dto.getUsername().length() == 0) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Mã BHXH không được để trống"));
+		}
+		
+		if(dto.getCccd() == null || dto.getCccd().length() == 0) {
+			return ResponseEntity.badRequest().body(new MessageResponse("CMND/CCCD không được để trống"));
+		}
+		
+		if(dto.getFullName() == null || dto.getFullName().length() == 0) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Họ tên không được để trống"));
+		}
+		
+		if(dto.getPassword() == null || dto.getPassword().length() == 0) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Mật khẩu không được để trống"));
+		}
+		
+		if(dto.getEmail() == null || dto.getEmail().length() == 0) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Email liên hệ không được để trống"));
+		}
+		
+		if(dto.getPhone() == null || dto.getPhone().length() == 0) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Số điện thoại liên hệ không được để trống"));
+		}
+		
+		if(dto.getCity() == null || dto.getCity().length() == 0) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Thành phố liên hệ không được để trống"));
+		}
+		
+		if(dto.getDistrict() == null || dto.getDistrict().length() == 0) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Quận huyện liên hệ không được để trống"));
+		}
+		
+		if(dto.getWard() == null || dto.getWard().length() == 0) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Xã phường liên hệ không được để trống"));
+		}
+		
+		if(dto.getHouse() == null || dto.getHouse().length() == 0) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Số nhà liên hệ không được để trống"));
+		}
 
 		Address address = new Address(dto.getCity(), dto.getDistrict(), dto.getWard(), dto.getHouse());
 

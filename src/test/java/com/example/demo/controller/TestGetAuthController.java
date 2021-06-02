@@ -1,4 +1,4 @@
-package com.example.demo.controllerandservice;
+package com.example.demo.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;

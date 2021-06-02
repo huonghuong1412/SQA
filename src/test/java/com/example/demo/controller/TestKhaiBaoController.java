@@ -1,4 +1,4 @@
-package com.example.demo.controllerandservice;
+package com.example.demo.controller;
 
 import static org.junit.Assert.assertNotNull;
 //import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

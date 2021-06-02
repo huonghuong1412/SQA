@@ -1,7 +1,5 @@
 package com.example.demo.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -11,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tbl_address")
-public class Address extends BaseEntity implements Serializable {
+public class Address extends BaseEntity {
 
 	@Column(name = "city")
 	private String city;

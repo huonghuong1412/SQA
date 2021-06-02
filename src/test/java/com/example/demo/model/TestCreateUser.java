@@ -1,21 +1,22 @@
 package com.example.demo.model;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.example.demo.common.Erole;
 import com.example.demo.entity.Address;
@@ -26,7 +27,8 @@ import com.example.demo.repository.UserRepository;
 
 @SpringBootTest()
 @TestMethodOrder(OrderAnnotation.class)
-public class TestUser {
+@RunWith(SpringJUnit4ClassRunner.class)
+public class TestCreateUser {
 
 	@Autowired
 	private UserRepository userRepos;
@@ -37,30 +39,15 @@ public class TestUser {
 	@Autowired
 	private PasswordEncoder encoder;
 
-	// Test tạo đối tượng Reole
-	@Test
-	@Order(1)
-	public void testCreateRole() {
-		Role role = new Role();
-		role.setId(1L);
-		role.setName(Erole.ROLE_USER);
-		try {
-			roleRepos.save(role);
-			assertNotNull(roleRepos.getOne(1L));
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-	}
-
+	// Rollback POST
 	// Test tạo đối tượng user
 	@Test
-	@Order(2)
+	@Order(1)
 	public void testCreate() {
 		Address address = new Address("Thành phố 1", "Quận Huyện 1", "Phường Xã 1", "Số nhà 1");
 		User user = new User();
-		
-		user.setUsername("0123456789");
-		user.setCccd("0123456789");
+		user.setUsername("0000000002");
+		user.setCccd("000000000002");
 		user.setFullName("Nguyễn Văn B");
 		user.setDateOfBirth("1999-12-14");
 		try {
@@ -69,7 +56,7 @@ public class TestUser {
 			e.getMessage();
 		}
 		user.setTypeUser(1);
-		user.setPhone("0393401266");
+		user.setPhone("0123456789");
 		user.setEmail("abc@gmail.com");
 
 		Set<Role> roles = new HashSet<>();
@@ -89,20 +76,8 @@ public class TestUser {
 		userRole.setUsers(setUser);
 		try {
 			userRepos.save(user);
-			assertNotNull(userRepos.findById(2L));
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-	}
-
-	@Test
-	@Order(3)
-	public void testReadAll() {
-		List<User> listFound = new ArrayList<User>();
-		try {
-			listFound = userRepos.findAll();
-			assertNotNull(listFound);
-			assertNotEquals(listFound.size(), 0);
+			System.out.println("AAA " + userRepos.getNextSeriesId());
+			assertNotNull(userRepos.findById(userRepos.getNextSeriesId()));
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -110,53 +85,45 @@ public class TestUser {
 
 	// Test lấy dòng vừa thêm vào bảng
 	@Test
-	@Order(4)
+	@Order(2)
 	public void testSingleRow() {
 		User user = new User();
 		try {
-			user = userRepos.getOne(2L);
-			assertNotNull(userRepos.getOne(2L));
-			assertEquals(user.getCccd(), "0123456789");
+			System.out.println("AAA " + userRepos.getNextSeriesId());
+			user = userRepos.getOne(userRepos.getNextSeriesId());
+			assertNotNull(userRepos.getOne(userRepos.getNextSeriesId()));
+			assertEquals(user.getUsername(), "0000000002");
+			assertEquals(user.getCccd(), "000000000002");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 	}
 
-	// Test sửa dữ liệu trong bảng
+	// Test xóa dữ liệu vừa thêm vào bảng
 	@Test
-	@Order(4)
-	public void testUpdate() {
-		User user = new User();
-		try {
-			user = userRepos.getOne(2L);
-			user.setFullName("Nguyễn Văn C");
-			user.setPhone("0999999999");
-			user.setEmail("test@gmail.com");
-			userRepos.save(user);
-			
-			assertNotEquals("Nguyễn Văn B", userRepos.getOne(2L).getFullName());
-			assertEquals("Nguyễn Văn C", userRepos.getOne(2L).getFullName());
-			
-			assertNotEquals("0123456789", userRepos.getOne(2L).getPhone());
-			assertEquals("0999999999", userRepos.getOne(2L).getPhone());
-			
-			assertNotEquals("abc@gmail.com", userRepos.getOne(2L).getEmail());
-			assertEquals("test@gmail.com", userRepos.getOne(2L).getEmail());
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-	}
-	
-	// Test xóa dữ liệu trong bảng
-	@Test
-	@Order(5)
+	@Order(3)
 	public void testDelete() {
 		try {
-			userRepos.deleteById(2L);
-			assertEquals(userRepos.existsById(2L), false);
+			System.out.println("BBB " + userRepos.getNextSeriesId());
+			userRepos.deleteById(userRepos.getNextSeriesId());
+			assertEquals(userRepos.existsById(userRepos.getNextSeriesId()), false);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 	}
 
+	// Test lấy dòng vừa thêm vào bảng, nếu null là đúng
+	@Test
+	@Order(4)
+	public void testSingleRow1() {
+		User user = new User();
+		try {
+			user = userRepos.getOne(userRepos.getNextSeriesId());
+			assertNull(userRepos.getOne(userRepos.getNextSeriesId()));
+			assertNotEquals(user.getUsername(), "0000000002");
+			assertNotEquals(user.getCccd(), "000000000002");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 }
