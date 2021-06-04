@@ -69,6 +69,64 @@ public class TestTinhPhi {
         final double actual = TinhPhi.tinhPhiBaoHiemCaNhan(i);
         assertEquals(expected, actual);
 	}
+	
+	// Test đóng bảo hiểm doanh nghiệp
+	
+	@Test
+	public void testTH15() {		// Test cho trường hợp lương cá nhân < 0
+		Long i = -10000L;
+        Double expected = 0.0;
+        Double actual = TinhPhi.tinhPhiBaoHiemDN(i);
+        assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testTH16() {		// // Test cho trường hợp lương cá nhân = 0
+		long i = 0;
+        final double expected = 0;
+        final double actual = TinhPhi.tinhPhiBaoHiemDN(i);
+        assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testTH17() {		// // Test cho trường hợp lương cá nhân < 4 triệu 4 trăm 20 nghìn
+		long i = 1000000;
+        final double expected = 1.0;
+        final double actual = TinhPhi.tinhPhiBaoHiemDN(i);
+        assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testTH18() {		// // Test cho trường hợp lương cá nhân = 4 triệu 4 trăm 20 nghìn
+		long i = 4420000;
+        final double expected = 773500;
+        final double actual = TinhPhi.tinhPhiBaoHiemDN(i);
+        assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testTH19() {		// // Test cho trường hợp lương cá nhân > 4 triệu 4 trăm 20 nghìn & < 29 triệu 8 trăm nghìn
+		long i = 5000000;
+        final double expected = 875000;
+        final double actual = TinhPhi.tinhPhiBaoHiemDN(i);
+        assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testTH20() {		// // Test cho trường hợp lương cá nhân = 29 triệu 8 trăm nghìn
+		long i = 29800000;
+        final double expected = 5215000;
+        final double actual = TinhPhi.tinhPhiBaoHiemDN(i);
+        assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testTH21() {		// // Test cho trường hợp lương cá nhân > 29 triệu 8 trăm nghìn
+		long i = 30000000;
+        final double expected = 2.0;
+        final double actual = TinhPhi.tinhPhiBaoHiemDN(i);
+        assertEquals(expected, actual);
+	}
 
 	// Test phần lao động tự do
 	@Test

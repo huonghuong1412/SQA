@@ -38,7 +38,7 @@ public class TestRegisterController {
 		RegisterDto test = new RegisterDto();
 		test.setUsername("0000000002");
 		test.setCccd("000000000002");
-		test.setFullName("Nguyen Van A");
+		test.setFullName("Nguyễn Công Hướng");
 		try {
 			test.setPassword(encoder.encode("123456789"));
 		} catch (Exception e) {
@@ -48,10 +48,10 @@ public class TestRegisterController {
 		test.setPhone("0123456789");
 		test.setEmail("abc@gmail.com");
 		test.setTypeUser(1);
-		test.setCity("Ha Noi");
-		test.setDistrict("Phu Xuyen");
-		test.setWard("Khai Thai");
-		test.setHouse("Khai Thai");
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
 		try {
 			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
 					.contentType("application/json")
@@ -63,14 +63,14 @@ public class TestRegisterController {
 		}
 		// Status trả về là 200: OK,
 	}
-	
+
 	// Username đã có trong csdl
 	@Test
 	public void testRegisterFailure1() throws Exception {
 		RegisterDto test = new RegisterDto();
 		test.setUsername("0000000001");
 		test.setCccd("000000000003");
-		test.setFullName("Nguyen Van A");
+		test.setFullName("Nguyễn Công Hướng");
 		try {
 			test.setPassword(encoder.encode("123456789"));
 		} catch (Exception e) {
@@ -80,10 +80,10 @@ public class TestRegisterController {
 		test.setPhone("0123456789");
 		test.setEmail("abc@gmail.com");
 		test.setTypeUser(1);
-		test.setCity("Ha Noi");
-		test.setDistrict("Phu Xuyen");
-		test.setWard("Khai Thai");
-		test.setHouse("Khai Thai");
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
 		try {
 			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
 					.contentType("application/json")
@@ -94,14 +94,14 @@ public class TestRegisterController {
 			e.getMessage();
 		}
 	}
-	
+
 	// CMND/CCCD đã có trong csdl
 	@Test
 	public void testRegisterFailure2() throws Exception {
 		RegisterDto test = new RegisterDto();
 		test.setUsername("0000000003");
 		test.setCccd("000000000001");
-		test.setFullName("Nguyen Van A");
+		test.setFullName("Nguyễn Công Hướng");
 		try {
 			test.setPassword(encoder.encode("123456789"));
 		} catch (Exception e) {
@@ -111,10 +111,10 @@ public class TestRegisterController {
 		test.setPhone("0123456789");
 		test.setEmail("abc@gmail.com");
 		test.setTypeUser(1);
-		test.setCity("Ha Noi");
-		test.setDistrict("Phu Xuyen");
-		test.setWard("Khai Thai");
-		test.setHouse("Khai Thai");
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
 		try {
 			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
 					.contentType("application/json")
@@ -126,13 +126,273 @@ public class TestRegisterController {
 		}
 	}
 	
-	// email đã có trong csdl
+	
+	// Cả cccd & mã bhxh đã có trong csdl
 	@Test
 	public void testRegisterFailure3() throws Exception {
 		RegisterDto test = new RegisterDto();
+		test.setUsername("0000000001");
+		test.setCccd("000000000001");
+		test.setFullName("Nguyễn Công Hướng");
+		try {
+			test.setPassword(encoder.encode("123456789"));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		test.setDateOfBirth("1999-12-14");
+		test.setPhone("0123456789");
+		test.setEmail("abc@gmail.com");
+		test.setTypeUser(1);
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
+		try {
+			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
+					.contentType("application/json")
+					.content(objectMapper.writeValueAsString(test)))
+					.andExpect(status().isBadRequest())
+					.andExpect(content().string(containsString("Mã số BHXH đã được đăng ký!")))
+					.andExpect(content().string(containsString("CMND/CCCD đã được đăng ký!")));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+	
+	// Cả cccd & email đã có trong csdl
+	@Test
+	public void testRegisterFailure4() throws Exception {
+		RegisterDto test = new RegisterDto();
+		test.setUsername("0000000003");
+		test.setCccd("000000000001");
+		test.setFullName("Nguyễn Công Hướng");
+		try {
+			test.setPassword(encoder.encode("123456789"));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		test.setDateOfBirth("1999-12-14");
+		test.setPhone("0123456789");
+		test.setEmail("abc@gmail.com");
+		test.setTypeUser(1);
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
+		try {
+			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
+					.contentType("application/json")
+					.content(objectMapper.writeValueAsString(test)))
+					.andExpect(status().isBadRequest())
+					.andExpect(content().string(containsString("Email đã được đăng ký!")))
+					.andExpect(content().string(containsString("CMND/CCCD đã được đăng ký!")));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+	
+	// Cả cccd & sđt đã có trong csdl
+	@Test
+	public void testRegisterFailure5() throws Exception {
+		RegisterDto test = new RegisterDto();
+		test.setUsername("0000000003");
+		test.setCccd("000000000001");
+		test.setFullName("Nguyễn Công Hướng");
+		try {
+			test.setPassword(encoder.encode("123456789"));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		test.setDateOfBirth("1999-12-14");
+		test.setPhone("0123456789");
+		test.setEmail("abc@gmail.com");
+		test.setTypeUser(1);
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
+		try {
+			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
+					.contentType("application/json")
+					.content(objectMapper.writeValueAsString(test)))
+					.andExpect(status().isBadRequest())
+					.andExpect(content().string(containsString("Số điện thoại đã được đăng ký!")))
+					.andExpect(content().string(containsString("CMND/CCCD đã được đăng ký!")));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+	
+	// Cả mã bhxh & email đã có trong csdl
+	@Test
+	public void testRegisterFailure6() throws Exception {
+		RegisterDto test = new RegisterDto();
+		test.setUsername("0000000001");
+		test.setCccd("000000000001");
+		test.setFullName("Nguyễn Công Hướng");
+		try {
+			test.setPassword(encoder.encode("123456789"));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		test.setDateOfBirth("1999-12-14");
+		test.setPhone("0123456789");
+		test.setEmail("abc@gmail.com");
+		test.setTypeUser(1);
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
+		try {
+			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
+					.contentType("application/json")
+					.content(objectMapper.writeValueAsString(test)))
+					.andExpect(status().isBadRequest())
+					.andExpect(content().string(containsString("Email đã được đăng ký!")))
+					.andExpect(content().string(containsString("Mã số BHXH đã được đăng ký!")));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+	
+	// Cả mã bhxh & sđt đã có trong csdl
+	@Test
+	public void testRegisterFailure7() throws Exception {
+		RegisterDto test = new RegisterDto();
+		test.setUsername("0000000003");
+		test.setCccd("000000000001");
+		test.setFullName("Nguyễn Công Hướng");
+		try {
+			test.setPassword(encoder.encode("123456789"));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		test.setDateOfBirth("1999-12-14");
+		test.setPhone("0123456789");
+		test.setEmail("abc@gmail.com");
+		test.setTypeUser(1);
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
+		try {
+			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
+					.contentType("application/json")
+					.content(objectMapper.writeValueAsString(test)))
+					.andExpect(status().isBadRequest())
+					.andExpect(content().string(containsString("Số điện thoại đã được đăng ký!")))
+					.andExpect(content().string(containsString("Mã số BHXH đã được đăng ký!")));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+	
+	// Cả sđt & email đã có trong csdl
+	@Test
+	public void testRegisterFailure8() throws Exception {
+		RegisterDto test = new RegisterDto();
+		test.setUsername("0000000003");
+		test.setCccd("000000000001");
+		test.setFullName("Nguyễn Công Hướng");
+		try {
+			test.setPassword(encoder.encode("123456789"));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		test.setDateOfBirth("1999-12-14");
+		test.setPhone("0123456789");
+		test.setEmail("abc@gmail.com");
+		test.setTypeUser(1);
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
+		try {
+			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
+					.contentType("application/json")
+					.content(objectMapper.writeValueAsString(test)))
+					.andExpect(status().isBadRequest())
+					.andExpect(content().string(containsString("Email đã được đăng ký!")))
+					.andExpect(content().string(containsString("Số điện thoại đã được đăng ký!")));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+	
+	// Cả cccd & mã bhxh, email đã có trong csdl
+	@Test
+	public void testRegisterFailure9() throws Exception {
+		RegisterDto test = new RegisterDto();
+		test.setUsername("0000000001");
+		test.setCccd("000000000001");
+		test.setFullName("Nguyễn Công Hướng");
+		try {
+			test.setPassword(encoder.encode("123456789"));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		test.setDateOfBirth("1999-12-14");
+		test.setPhone("0123456789");
+		test.setEmail("abc@gmail.com");
+		test.setTypeUser(1);
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
+		try {
+			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
+					.contentType("application/json")
+					.content(objectMapper.writeValueAsString(test)))
+					.andExpect(status().isBadRequest())
+					.andExpect(content().string(containsString("Mã số BHXH đã được đăng ký!")))
+					.andExpect(content().string(containsString("Email đã được đăng ký!")))
+					.andExpect(content().string(containsString("CMND/CCCD đã được đăng ký!")));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+	
+	// Cả cccd & mã bhxh, sđt đã có trong csdl
+	@Test
+	public void testRegisterFailure10() throws Exception {
+		RegisterDto test = new RegisterDto();
+		test.setUsername("0000000001");
+		test.setCccd("000000000001");
+		test.setFullName("Nguyễn Công Hướng");
+		try {
+			test.setPassword(encoder.encode("123456789"));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		test.setDateOfBirth("1999-12-14");
+		test.setPhone("0123456789");
+		test.setEmail("abc@gmail.com");
+		test.setTypeUser(1);
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
+		try {
+			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
+					.contentType("application/json")
+					.content(objectMapper.writeValueAsString(test)))
+					.andExpect(status().isBadRequest())
+					.andExpect(content().string(containsString("Mã số BHXH đã được đăng ký!")))
+					.andExpect(content().string(containsString("Số điện thoại đã được đăng ký!")))
+					.andExpect(content().string(containsString("CMND/CCCD đã được đăng ký!")));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+	
+	
+	// email đã có trong csdl
+	@Test
+	public void testRegisterFailure11() throws Exception {
+		RegisterDto test = new RegisterDto();
 		test.setUsername("0000000003");
 		test.setCccd("000000000003");
-		test.setFullName("Nguyen Van A");
+		test.setFullName("Nguyễn Công Hướng");
 		try {
 			test.setPassword(encoder.encode("123456789"));
 		} catch (Exception e) {
@@ -142,10 +402,10 @@ public class TestRegisterController {
 		test.setPhone("0123456789");
 		test.setEmail("test@gmail.com");
 		test.setTypeUser(1);
-		test.setCity("Ha Noi");
-		test.setDistrict("Phu Xuyen");
-		test.setWard("Khai Thai");
-		test.setHouse("Khai Thai");
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
 		try {
 			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
 					.contentType("application/json")
@@ -156,14 +416,14 @@ public class TestRegisterController {
 			e.getMessage();
 		}
 	}
-	
+
 	// số điện thoại đã có trong csdl
 	@Test
-	public void testRegisterFailure4() throws Exception {
+	public void testRegisterFailure12() throws Exception {
 		RegisterDto test = new RegisterDto();
 		test.setUsername("0000000003");
 		test.setCccd("000000000003");
-		test.setFullName("Nguyen Van A");
+		test.setFullName("Nguyễn Công Hướng");
 		try {
 			test.setPassword(encoder.encode("123456789"));
 		} catch (Exception e) {
@@ -173,10 +433,10 @@ public class TestRegisterController {
 		test.setPhone("0999999999");
 		test.setEmail("abc@gmail.com");
 		test.setTypeUser(1);
-		test.setCity("Ha Noi");
-		test.setDistrict("Phu Xuyen");
-		test.setWard("Khai Thai");
-		test.setHouse("Khai Thai");
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
 		try {
 			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
 					.contentType("application/json")
@@ -190,11 +450,11 @@ public class TestRegisterController {
 
 	// Trong username
 	@Test
-	public void testRegisterFailure5() throws Exception {
+	public void testRegisterFailure13() throws Exception {
 		RegisterDto test = new RegisterDto();
 		test.setUsername(null);
 		test.setCccd("000000000002");
-		test.setFullName("Nguyen Van A");
+		test.setFullName("Nguyễn Công Hướng");
 		try {
 			test.setPassword(encoder.encode("123456789"));
 		} catch (Exception e) {
@@ -204,10 +464,10 @@ public class TestRegisterController {
 		test.setPhone("0123456789");
 		test.setEmail("abc@gmail.com");
 		test.setTypeUser(1);
-		test.setCity("Ha Noi");
-		test.setDistrict("Phu Xuyen");
-		test.setWard("Khai Thai");
-		test.setHouse("Khai Thai");
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
 		try {
 			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
 					.contentType("application/json")
@@ -221,11 +481,11 @@ public class TestRegisterController {
 
 	// Trong cccd
 	@Test
-	public void testRegisterFailure6() throws Exception {
+	public void testRegisterFailure14() throws Exception {
 		RegisterDto test = new RegisterDto();
 		test.setUsername("0000000003");
 		test.setCccd(null);
-		test.setFullName("Nguyen Van A");
+		test.setFullName("Nguyễn Công Hướng");
 		try {
 			test.setPassword(encoder.encode("123456789"));
 		} catch (Exception e) {
@@ -235,10 +495,10 @@ public class TestRegisterController {
 		test.setPhone("0123456789");
 		test.setEmail("abc@gmail.com");
 		test.setTypeUser(1);
-		test.setCity("Ha Noi");
-		test.setDistrict("Phu Xuyen");
-		test.setWard("Khai Thai");
-		test.setHouse("Khai Thai");
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
 		try {
 			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
 					.contentType("application/json")
@@ -252,11 +512,11 @@ public class TestRegisterController {
 
 	// Trong cccd & username
 	@Test
-	public void testRegisterFailure7() throws Exception {
+	public void testRegisterFailure15() throws Exception {
 		RegisterDto test = new RegisterDto();
 		test.setUsername("");
 		test.setCccd("");
-		test.setFullName("Nguyen Van A");
+		test.setFullName("Nguyễn Công Hướng");
 		try {
 			test.setPassword(encoder.encode("123456789"));
 		} catch (Exception e) {
@@ -266,10 +526,10 @@ public class TestRegisterController {
 		test.setPhone("0123456789");
 		test.setEmail("abc@gmail.com");
 		test.setTypeUser(1);
-		test.setCity("Ha Noi");
-		test.setDistrict("Phu Xuyen");
-		test.setWard("Khai Thai");
-		test.setHouse("Khai Thai");
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
 		try {
 			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
 					.contentType("application/json")
@@ -284,7 +544,7 @@ public class TestRegisterController {
 
 	// Trong ho ten
 	@Test
-	public void testRegisterFailure8() throws Exception {
+	public void testRegisterFailure16() throws Exception {
 		RegisterDto test = new RegisterDto();
 		test.setUsername("0000000001");
 		test.setCccd("000000000001");
@@ -298,10 +558,10 @@ public class TestRegisterController {
 		test.setPhone("0123456789");
 		test.setEmail("abc@gmail.com");
 		test.setTypeUser(1);
-		test.setCity("Ha Noi");
-		test.setDistrict("Phu Xuyen");
-		test.setWard("Khai Thai");
-		test.setHouse("Khai Thai");
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
 		try {
 			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
 					.contentType("application/json")
@@ -315,11 +575,11 @@ public class TestRegisterController {
 
 	// Trong mat khau
 	@Test
-	public void testRegisterFailure9() throws Exception {
+	public void testRegisterFailure17() throws Exception {
 		RegisterDto test = new RegisterDto();
 		test.setUsername("0000000001");
 		test.setCccd("000000000001");
-		test.setFullName("Nguyen Van A");
+		test.setFullName("Nguyễn Công Hướng");
 		try {
 			test.setPassword(encoder.encode(""));
 		} catch (Exception e) {
@@ -328,10 +588,10 @@ public class TestRegisterController {
 		test.setPhone("0123456789");
 		test.setEmail("abc@gmail.com");
 		test.setTypeUser(1);
-		test.setCity("Ha Noi");
-		test.setDistrict("Phu Xuyen");
-		test.setWard("Khai Thai");
-		test.setHouse("Khai Thai");
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
 		try {
 			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
 					.contentType("application/json")
@@ -345,11 +605,11 @@ public class TestRegisterController {
 
 	// Trong SDT
 	@Test
-	public void testRegisterFailure10() throws Exception {
+	public void testRegisterFailure18() throws Exception {
 		RegisterDto test = new RegisterDto();
 		test.setUsername("0000000001");
 		test.setCccd("000000000001");
-		test.setFullName("Nguyen Van A");
+		test.setFullName("Nguyễn Công Hướng");
 		try {
 			test.setPassword(encoder.encode("123456789"));
 		} catch (Exception e) {
@@ -359,10 +619,10 @@ public class TestRegisterController {
 		test.setPhone("");
 		test.setEmail("abc@gmail.com");
 		test.setTypeUser(1);
-		test.setCity("Ha Noi");
-		test.setDistrict("Phu Xuyen");
-		test.setWard("Khai Thai");
-		test.setHouse("Khai Thai");
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
 		try {
 			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
 					.contentType("application/json")
@@ -376,11 +636,11 @@ public class TestRegisterController {
 
 	// Trong email
 	@Test
-	public void testRegisterFailure12() throws Exception {
+	public void testRegisterFailure19() throws Exception {
 		RegisterDto test = new RegisterDto();
 		test.setUsername("0000000001");
 		test.setCccd("000000000001");
-		test.setFullName("Nguyen Van A");
+		test.setFullName("Nguyễn Công Hướng");
 		try {
 			test.setPassword(encoder.encode("123456789"));
 		} catch (Exception e) {
@@ -390,10 +650,10 @@ public class TestRegisterController {
 		test.setPhone("0123456789");
 		test.setEmail("");
 		test.setTypeUser(1);
-		test.setCity("Ha Noi");
-		test.setDistrict("Phu Xuyen");
-		test.setWard("Khai Thai");
-		test.setHouse("Khai Thai");
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
 		try {
 			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
 					.contentType("application/json")
@@ -404,129 +664,171 @@ public class TestRegisterController {
 			e.getMessage();
 		}
 	}
-	
+
 	// Trong thanh pho
+	@Test
+	public void testRegisterFailure20() throws Exception {
+		RegisterDto test = new RegisterDto();
+		test.setUsername("0000000001");
+		test.setCccd("000000000001");
+		test.setFullName("Nguyễn Công Hướng");
+		try {
+			test.setPassword(encoder.encode("123456789"));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		test.setDateOfBirth("1999-12-14");
+		test.setPhone("0123456789");
+		test.setEmail("abc@gmail.com");
+		test.setTypeUser(1);
+		test.setCity("");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
+		try {
+			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
+					.contentType("application/json")
+					.content(objectMapper.writeValueAsString(test)))
+					.andExpect(status().isBadRequest())
+					.andExpect(content().string(containsString("Thành phố liên hệ không được để trống")));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+
+	// Trong quan huyen
+	@Test
+	public void testRegisterFailure21() throws Exception {
+		RegisterDto test = new RegisterDto();
+		test.setUsername("0000000001");
+		test.setCccd("000000000001");
+		test.setFullName("Nguyễn Công Hướng");
+		try {
+			test.setPassword(encoder.encode("123456789"));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		test.setDateOfBirth("1999-12-14");
+		test.setPhone("0123456789");
+		test.setEmail("abc@gmail.com");
+		test.setTypeUser(1);
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
+		try {
+			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
+					.contentType("application/json")
+					.content(objectMapper.writeValueAsString(test)))
+					.andExpect(status().isBadRequest())
+					.andExpect(content().string(containsString("Quận huyện liên hệ không được để trống")));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+
+	// Trong xa phuong
+	@Test
+	public void testRegisterFailure22() throws Exception {
+		RegisterDto test = new RegisterDto();
+		test.setUsername("0000000001");
+		test.setCccd("000000000001");
+		test.setFullName("Nguyễn Công Hướng");
+		try {
+			test.setPassword(encoder.encode("123456789"));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		test.setDateOfBirth("1999-12-14");
+		test.setPhone("0123456789");
+		test.setEmail("abc@gmail.com");
+		test.setTypeUser(1);
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("");
+		test.setHouse("Số 62 ngõ 32 phố Phúc Xá");
+		try {
+			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
+					.contentType("application/json")
+					.content(objectMapper.writeValueAsString(test)))
+					.andExpect(status().isBadRequest())
+					.andExpect(content().string(containsString("Xã phường liên hệ không được để trống")));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+
+	// Trong dia chi nha
+	@Test
+	public void testRegisterFailure23() throws Exception {
+		RegisterDto test = new RegisterDto();
+		test.setUsername("0000000001");
+		test.setCccd("000000000001");
+		test.setFullName("Nguyễn Công Hướng");
+		try {
+			test.setPassword(encoder.encode("123456789"));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		test.setDateOfBirth("1999-12-14");
+		test.setPhone("0123456789");
+		test.setEmail("abc@gmail.com");
+		test.setTypeUser(1);
+		test.setCity("Thành phố Hà Nội");
+		test.setDistrict("Quận Ba Đình");
+		test.setWard("Phường Phúc Xá");
+		test.setHouse("");
+		try {
+			mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
+					.contentType("application/json")
+					.content(objectMapper.writeValueAsString(test)))
+					.andExpect(status().isBadRequest())
+					.andExpect(content().string(containsString("Số nhà liên hệ không được để trống")));
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+	
+	// Trong tất cả các trường
 		@Test
-		public void testRegisterFailure13() throws Exception {
+		public void testRegisterFailure24() throws Exception {
 			RegisterDto test = new RegisterDto();
-			test.setUsername("0000000001");
-			test.setCccd("000000000001");
-			test.setFullName("Nguyen Van A");
+			test.setUsername("");
+			test.setCccd("");
+			test.setFullName("");
 			try {
-				test.setPassword(encoder.encode("123456789"));
+				test.setPassword(encoder.encode(""));
 			} catch (Exception e) {
 				e.getMessage();
 			}
-			test.setDateOfBirth("1999-12-14");
-			test.setPhone("0123456789");
-			test.setEmail("abc@gmail.com");
-			test.setTypeUser(1);
+			test.setDateOfBirth("");
+			test.setPhone("");
+			test.setEmail("");
+			test.setTypeUser(null);
 			test.setCity("");
-			test.setDistrict("Phu Xuyen");
-			test.setWard("Khai Thai");
-			test.setHouse("Khai Thai");
-			try {
-				mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
-						.contentType("application/json")
-						.content(objectMapper.writeValueAsString(test)))
-						.andExpect(status().isBadRequest())
-						.andExpect(content().string(containsString("Thành phố liên hệ không được để trống")));
-			} catch (Exception e) {
-				e.getMessage();
-			}
-		}
-		
-		// Trong quan huyen
-		@Test
-		public void testRegisterFailure14() throws Exception {
-			RegisterDto test = new RegisterDto();
-			test.setUsername("0000000001");
-			test.setCccd("000000000001");
-			test.setFullName("Nguyen Van A");
-			try {
-				test.setPassword(encoder.encode("123456789"));
-			} catch (Exception e) {
-				e.getMessage();
-			}
-			test.setDateOfBirth("1999-12-14");
-			test.setPhone("0123456789");
-			test.setEmail("abc@gmail.com");
-			test.setTypeUser(1);
-			test.setCity("Ha Noi");
 			test.setDistrict("");
-			test.setWard("Khai Thai");
-			test.setHouse("Khai Thai");
-			try {
-				mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
-						.contentType("application/json")
-						.content(objectMapper.writeValueAsString(test)))
-						.andExpect(status().isBadRequest())
-						.andExpect(content().string(containsString("Quận huyện liên hệ không được để trống")));
-			} catch (Exception e) {
-				e.getMessage();
-			}
-		}
-		
-		// Trong xa phuong
-		@Test
-		public void testRegisterFailure15() throws Exception {
-			RegisterDto test = new RegisterDto();
-			test.setUsername("0000000001");
-			test.setCccd("000000000001");
-			test.setFullName("Nguyen Van A");
-			try {
-				test.setPassword(encoder.encode("123456789"));
-			} catch (Exception e) {
-				e.getMessage();
-			}
-			test.setDateOfBirth("1999-12-14");
-			test.setPhone("0123456789");
-			test.setEmail("abc@gmail.com");
-			test.setTypeUser(1);
-			test.setCity("Ha Noi");
-			test.setDistrict("Phu Xuyen");
 			test.setWard("");
-			test.setHouse("Khai Thai");
-			try {
-				mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
-						.contentType("application/json")
-						.content(objectMapper.writeValueAsString(test)))
-						.andExpect(status().isBadRequest())
-						.andExpect(content().string(containsString("Xã phường liên hệ không được để trống")));
-			} catch (Exception e) {
-				e.getMessage();
-			}
-		}
-		
-		// Trong dia chi nha
-		@Test
-		public void testRegisterFailure16() throws Exception {
-			RegisterDto test = new RegisterDto();
-			test.setUsername("0000000001");
-			test.setCccd("000000000001");
-			test.setFullName("Nguyen Van A");
-			try {
-				test.setPassword(encoder.encode("123456789"));
-			} catch (Exception e) {
-				e.getMessage();
-			}
-			test.setDateOfBirth("1999-12-14");
-			test.setPhone("0123456789");
-			test.setEmail("abc@gmail.com");
-			test.setTypeUser(1);
-			test.setCity("Ha Noi");
-			test.setDistrict("Phu Xuyen");
-			test.setWard("Khai Thai");
 			test.setHouse("");
 			try {
 				mockMvc.perform(post("http://localhost:8085/api/auth/register", 42L)
 						.contentType("application/json")
 						.content(objectMapper.writeValueAsString(test)))
 						.andExpect(status().isBadRequest())
+						.andExpect(content().string(containsString("Mã BHXH không được để trống")))
+						.andExpect(content().string(containsString("CMND/CCCD không được để trống")))
+						.andExpect(content().string(containsString("Họ tên không được để trống")))
+						.andExpect(content().string(containsString("Mật khẩu không được để trống")))
+						.andExpect(content().string(containsString("Số điện thoại liên hệ không được để trống")))
+						.andExpect(content().string(containsString("Email liên hệ không được để trống")))
+						.andExpect(content().string(containsString("Thành phố liên hệ không được để trống")))
+						.andExpect(content().string(containsString("Quận huyện liên hệ không được để trống")))
+						.andExpect(content().string(containsString("Xã phường liên hệ không được để trống")))
 						.andExpect(content().string(containsString("Số nhà liên hệ không được để trống")));
 			} catch (Exception e) {
 				e.getMessage();
 			}
 		}
+	
+	
 
 }

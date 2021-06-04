@@ -22,10 +22,10 @@ public class JwtUtils {
 	private static final Logger Logger = LoggerFactory.getLogger(JwtUtils.class);
 
 	@Value("${bezkoder.app.jwtSecret}")
-	private static String jwtSecret;
+	String jwtSecret;
 
 	@Value("${bezkoder.app.jwtExpirationMs}")
-	private static int jwtExpirationMs;
+	int jwtExpirationMs;
 
 	public String generateJwtToken(Authentication authentication) {
 		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
@@ -58,11 +58,11 @@ public class JwtUtils {
 		return false;
 	}
 
-	public static String createToken(Long id, String username, String password, String email) {
-		UserDetailsImpl userPrincipal = new UserDetailsImpl(id, username, password, email);
-		return Jwts.builder().setSubject(userPrincipal.getUsername()).setIssuedAt(new Date())
-				.setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
-				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
-	}
+//	public static String createToken(Long id, String username, String password, String email) {
+//		UserDetailsImpl userPrincipal = new UserDetailsImpl(id, username, password, email);
+//		return Jwts.builder().setSubject(userPrincipal.getUsername()).setIssuedAt(new Date())
+//				.setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
+//				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+//	}
 
 }

@@ -28,6 +28,8 @@ public class UserDto extends AbstractDTO<UserDto> {
 	private Double phiBaoHiem;
 	private Double phiBaoHiemDN;
 
+	private String status;
+
 	TinhPhi phi = new TinhPhi();
 
 	public UserDto() {
@@ -58,11 +60,26 @@ public class UserDto extends AbstractDTO<UserDto> {
 			this.tenDonVi = user.getTenDonVi();
 			this.maDonVi = user.getMaDonVi();
 			if (this.salary != null) {
-				if(this.typeUser == 1) {
-					this.phiBaoHiem = TinhPhi.tinhPhiBaoHiemCaNhan(this.salary);
-					this.phiBaoHiemDN = TinhPhi.tinhPhiBaoHiemDN(this.salary);
+				if (this.typeUser == 1) {
+					if (this.salary > 0 && this.salary < 4420000) {
+						this.status = "Bạn không thuộc đối tượng đóng BHXH";
+					} else if (this.salary > 29800000) {
+						this.phiBaoHiem = TinhPhi.tinhPhiBaoHiemCaNhan(this.salary - 29800000);
+						this.phiBaoHiemDN = TinhPhi.tinhPhiBaoHiemDN(this.salary - 29800000);
+					} else {
+						this.phiBaoHiem = TinhPhi.tinhPhiBaoHiemCaNhan(this.salary);
+						this.phiBaoHiemDN = TinhPhi.tinhPhiBaoHiemDN(this.salary);
+					}
+
 				} else {
-					this.phiBaoHiem = TinhPhi.tinhPhiBaoHiemTudo(this.salary);
+					if (this.salary > 0 && this.salary < 700000) {
+						this.status = "Bạn không thuộc đối tượng đóng BHXH";
+					} else if (this.salary > 29800000) {
+						this.phiBaoHiem = TinhPhi.tinhPhiBaoHiemTudo(this.salary - 29800000);
+					} else {
+						this.phiBaoHiem = TinhPhi.tinhPhiBaoHiemTudo(this.salary);
+					}
+
 				}
 			}
 		}
@@ -228,6 +245,12 @@ public class UserDto extends AbstractDTO<UserDto> {
 		this.phiBaoHiemDN = phiBaoHiemDN;
 	}
 
-	
-	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 }

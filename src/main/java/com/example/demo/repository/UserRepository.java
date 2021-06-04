@@ -29,5 +29,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	public Boolean existsByPhone(String phone);
 
 	public Boolean existsByCccd(String cccd);
+	
+	public Boolean existsByMaSoThue(String maSoThue);
 
 }

@@ -19,8 +19,13 @@ public class TinhPhi {
 	public static Double tinhPhiBaoHiemDN(Long luong) {
 		if (luong <= 0) {
 			return 0.0;
+		} else if (luong > 0 && luong < 4420000) {
+			return 1.0;
+		} else if(luong > 29800000) {
+			return 2.0;
+		} else {
+			return luong * 0.175;
 		}
-		return luong * 0.175;
 	}
 	
 	public static Double tinhPhiBaoHiemTudo(Long luong) {

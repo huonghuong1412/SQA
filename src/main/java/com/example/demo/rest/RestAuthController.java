@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -57,7 +56,7 @@ public class RestAuthController {
 
 	@Autowired
 	private AddressRepository addressRepository;
-	
+
 	@Autowired
 	private PasswordEncoder encoder;
 
@@ -101,44 +100,44 @@ public class RestAuthController {
 		if (userRepository.existsByEmail(dto.getEmail())) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Email đã được đăng ký!"));
 		}
-		
-		if(dto.getUsername() == null || dto.getUsername().length() == 0) {
+
+		if (dto.getUsername() == null || dto.getUsername().length() == 0) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Mã BHXH không được để trống"));
 		}
-		
-		if(dto.getCccd() == null || dto.getCccd().length() == 0) {
+
+		if (dto.getCccd() == null || dto.getCccd().length() == 0) {
 			return ResponseEntity.badRequest().body(new MessageResponse("CMND/CCCD không được để trống"));
 		}
-		
-		if(dto.getFullName() == null || dto.getFullName().length() == 0) {
+
+		if (dto.getFullName() == null || dto.getFullName().length() == 0) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Họ tên không được để trống"));
 		}
-		
-		if(dto.getPassword() == null || dto.getPassword().length() == 0) {
+
+		if (dto.getPassword() == null || dto.getPassword().length() == 0) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Mật khẩu không được để trống"));
 		}
-		
-		if(dto.getEmail() == null || dto.getEmail().length() == 0) {
+
+		if (dto.getEmail() == null || dto.getEmail().length() == 0) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Email liên hệ không được để trống"));
 		}
-		
-		if(dto.getPhone() == null || dto.getPhone().length() == 0) {
+
+		if (dto.getPhone() == null || dto.getPhone().length() == 0) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Số điện thoại liên hệ không được để trống"));
 		}
-		
-		if(dto.getCity() == null || dto.getCity().length() == 0) {
+
+		if (dto.getCity() == null || dto.getCity().length() == 0) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Thành phố liên hệ không được để trống"));
 		}
-		
-		if(dto.getDistrict() == null || dto.getDistrict().length() == 0) {
+
+		if (dto.getDistrict() == null || dto.getDistrict().length() == 0) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Quận huyện liên hệ không được để trống"));
 		}
-		
-		if(dto.getWard() == null || dto.getWard().length() == 0) {
+
+		if (dto.getWard() == null || dto.getWard().length() == 0) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Xã phường liên hệ không được để trống"));
 		}
-		
-		if(dto.getHouse() == null || dto.getHouse().length() == 0) {
+
+		if (dto.getHouse() == null || dto.getHouse().length() == 0) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Số nhà liên hệ không được để trống"));
 		}
 
@@ -192,7 +191,7 @@ public class RestAuthController {
 	}
 
 	@GetMapping("/info")
-	@PreAuthorize("hasRole('USER') or hasRole('BUSINESS') or hasRole('ADMIN')")
+//	@PreAuthorize("hasRole('USER') or hasRole('BUSINESS') or hasRole('ADMIN')")
 	public ResponseEntity<UserDto> getNewById() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -201,10 +200,39 @@ public class RestAuthController {
 	}
 
 	@PutMapping("/{id}")
-	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+//	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<?> update(@Validated @RequestBody UserDto dto, @PathVariable Long id) {
 		User user = userRepository.getOne(id);
 		Address address = addressRepository.findOneByUserId(id);
+
+		if (userRepository.existsByMaSoThue(dto.getMaSoThue()) && dto.getMaSoThue().equals(user.getMaSoThue()) == false) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Mã số thuế đã được đăng ký!"));
+		}
+
+		switch (dto.getTypeUser()) {
+		case 1:
+			if (dto.getSalary() == null || dto.getSalary() <= 0) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Lương không thể nhỏ hơn hoặc bằng 0"));
+			} else if (dto.getSalary() > 0 && dto.getSalary() < 4420000) {
+				return ResponseEntity.badRequest()
+						.body(new MessageResponse("Lương phải lớn hơn hoặc bằng 4420000 mới có thể đóng bảo hiểm"));
+			}
+			break;
+		case 2:
+			if (dto.getSalary() == null || dto.getSalary() <= 0) {
+				return ResponseEntity.badRequest()
+						.body(new MessageResponse("Số tiền đóng không thể nhỏ hơn hoặc bằng 0"));
+			} else if (dto.getSalary() > 0 && dto.getSalary() < 700000) {
+				return ResponseEntity.badRequest()
+						.body(new MessageResponse("Số tiền đóng phải lớn hơn hoặc bằng 700000"));
+			} else if (dto.getSalary() > 29800000) {
+				return ResponseEntity.badRequest()
+						.body(new MessageResponse("Số tiền đóng phải nhỏ hơn hoặc bằng 29800000"));
+			}
+			break;
+		default:
+			break;
+		}
 
 		address.setCity(dto.getCity());
 		address.setDistrict(dto.getDistrict());
@@ -225,7 +253,7 @@ public class RestAuthController {
 		user.setMaSoThue(dto.getMaSoThue());
 		user.setTenDonVi(dto.getTenDonVi());
 		user.setMaDonVi(dto.getMaDonVi());
-	
+
 		address.setUser(user);
 		userRepository.save(user);
 		return ResponseEntity.ok(new MessageResponse("Khai báo thông tin thành công!"));
